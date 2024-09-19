@@ -1,12 +1,13 @@
-let fetch;
-if (typeof window !== 'undefined' && window.fetch) {
+let fetch: any;
+if (typeof window !== 'undefined') {
   ({ fetch } = window);
-} else {
-  fetch = require('cross-fetch'); // eslint-disable-line global-require
 }
 
 class Client {
-  constructor(address, defaultOptions = {}) {
+  address: any;
+  options: any;
+
+  constructor(address: any, defaultOptions = {}) {
     if (typeof address !== 'string') throw new Error('InvalidArgument: address has to ba a string');
     if (typeof defaultOptions !== 'object')
       throw new Error('InvalidArgument: defaultOptions has to be an object');
@@ -25,7 +26,7 @@ class Client {
     this.fetchUrl = this.fetchUrl.bind(this);
   }
 
-  getUrl(url) {
+  getUrl(url: string) {
     return fetch(this.address + url, {
         headers: {
           'Cache-Control': 'no-cache'
@@ -33,7 +34,7 @@ class Client {
       });
   }
 
-  fetchUrl(url, request) {
+  fetchUrl(url: string, request: any) {
     return fetch(this.address + url, {
       body: request.body || {},
       credentials: request.credentials || 'same-origin',
