@@ -14,7 +14,7 @@ const { Header, Content, Footer } = Layout;
 
 interface Tweet {
   _id: string;
-  text: string;
+  tweets_content: string;
   hasCandidate: boolean;
   reviewedBy: string;
 }
@@ -26,13 +26,13 @@ async function getNextTweet() {
   return body.data[0];
 }
 
-function removeLineBreaks(text) {
+function removeLineBreaks(text: string) {
   return text.replace(/(\r\n|\n|\r)/gm, " ");
 }
 
 const App = () => {
   const [start, setStart] = useState(false);
-  const [tweet, setTweet] = useState({});
+  const [tweet, setTweet] = useState<Tweet | null>(null);
   const [reviewEnd, setReviewEnd] = useState(false);
 
   // Function to update the tweet classification
@@ -67,11 +67,15 @@ const App = () => {
   }
 
   const handleHasCandidate = async () => {
-    await updateTweetStatus(tweet._id, true, 'user');
+    if (tweet) {
+      await updateTweetStatus(tweet._id, true, 'user');
+    }
   }
 
   const handleHasNoCandidate = async () => {
-    await updateTweetStatus(tweet._id, false, 'user');
+    if (tweet) {
+      await updateTweetStatus(tweet._id, false, 'user');
+    }
   }
 
   const handleStart = async () => {
@@ -99,7 +103,7 @@ const App = () => {
             {start ?
               <>
                 <div className="top-text">
-                  <Typography.Text>{removeLineBreaks(htmlToText(tweet.tweets_content))}</Typography.Text>
+                  {tweet && <Typography.Text>{removeLineBreaks(htmlToText(tweet?.tweets_content))}</Typography.Text>}
                 </div>
                 <div className="button-container">
                   <Button type="primary" onClick={handleHasCandidate} style={{ marginLeft: '10px' }}>
