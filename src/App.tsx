@@ -1,11 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import '@twa-dev/sdk';
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import "@twa-dev/sdk";
+import truhackAPI from "./apis/truhackAPI"; // Import truhackAPI
+
+function getTweets() {
+  truhackAPI.getUrl("/tweets").then(async (response: any) => {
+    const body = await response.json();
+    console.log(body);
+    if (response.status !== 200) throw Error(body.message);
+    return body;
+  });
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  getTweets();
 
   return (
     <>
@@ -30,7 +41,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
