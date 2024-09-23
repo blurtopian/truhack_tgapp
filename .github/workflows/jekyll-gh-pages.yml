@@ -39,6 +39,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+        env:
+          VITE_TRUHACK_API: ${{ env.VITE_TRUHACK_API }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
