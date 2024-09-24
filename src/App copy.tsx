@@ -1,21 +1,22 @@
 import '@telegram-apps/telegram-ui/dist/styles.css';
 
-import styles from './Placeholder.stories.module.css';
-
 // Import components from the library
-import { AppRoot, List, 
-  FixedLayout, Button, Tabbar, Placeholder
+import { AppRoot, Cell, List, Section, 
+  FixedLayout, Button, Tabbar, 
 } from '@telegram-apps/telegram-ui';
+
+import { FormSection } from './components/FormSection/FormSection';
 
 import { Icon28Chat } from '@telegram-apps/telegram-ui/dist/icons/28/chat';
 import { Icon28Devices } from '@telegram-apps/telegram-ui/dist/icons/28/devices';
 import { Icon28Stats } from '@telegram-apps/telegram-ui/dist/icons/28/stats';
 
+// Example data for rendering list cells
+const cellsTexts = ['Chat Settings', 'Data and Storage', 'Devices'];
+
 import { useState } from 'react';
 import "@twa-dev/sdk";
 import truhackAPI from "./apis/truhackAPI"; // Import truhackAPI
-import { TweetSection } from './components/TweetSection/TweetSection';
-import { ButtonSection } from './components/ButtonSection/ButtonSection';
 
 const tabs = [
   {
@@ -113,18 +114,6 @@ const App = () => {
     }
   };
 
-  const args = {
-    children: (
-      <img
-        alt="Telegram sticker"
-        src="https://xelene.me/telegram.gif"
-        className={styles.sticker}
-      />
-    ),
-    header: 'Title',
-    description: 'Description',
-  };
-
   return (
     <AppRoot>
       <FixedLayout vertical="top" style={{
@@ -135,45 +124,20 @@ const App = () => {
         </Button>
       </FixedLayout>
       <List>
-        {reviewEnd ?
-          <Placeholder {...args} />
-          :
-          null
-        }
-        {start ?
-          <FixedLayout style={{
-            padding: 32
-          }}>
-            <List>
-              {tweet && <TweetSection tweet={tweet} />}
-              <ButtonSection
-                handleHasCandidate={handleHasCandidate}
-                handleHasNoCandidate={handleHasNoCandidate}
-              />
-            </List>
-          </FixedLayout>
-          :
-          null
-        } 
+        <FormSection />
       </List>
       <FixedLayout style={{
         padding: 16
       }}>
-        {start ?
-          <Tabbar>
-          {tabs.map(({
-            id,
-            text,
-            Icon
-          }) => <Tabbar.Item key={id} text={text} selected={id === currentTab} onClick={() => setCurrentTab(id)}>
-                <Icon />
-              </Tabbar.Item>)}
-          </Tabbar>
-          :
-          <Button size="l" stretched onClick={handleStart}>
-            Start
-          </Button>
-        }
+        <Tabbar>
+        {tabs.map(({
+          id,
+          text,
+          Icon
+        }) => <Tabbar.Item key={id} text={text} selected={id === currentTab} onClick={() => setCurrentTab(id)}>
+              <Icon />
+            </Tabbar.Item>)}
+        </Tabbar>
       </FixedLayout>
     </AppRoot>
   );
